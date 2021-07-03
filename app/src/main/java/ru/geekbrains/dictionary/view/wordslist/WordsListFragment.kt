@@ -4,19 +4,30 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View.inflate
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_words_list.*
 import ru.geekbrains.dictionary.R
 import ru.geekbrains.dictionary.model.data.AppState
 import ru.geekbrains.dictionary.model.data.DataModel
-import ru.geekbrains.dictionary.presenter.FragmentPresenter
+import ru.geekbrains.dictionary.utils.network.isOnline
 import ru.geekbrains.dictionary.view.App
 import ru.geekbrains.dictionary.view.BackButtonListener
 import ru.geekbrains.dictionary.view.base.BaseFragment
 import ru.geekbrains.dictionary.view.base.View
 import ru.geekbrains.dictionary.view.wordslist.adapter.WordsListRVAdapter
+import javax.inject.Inject
 
 class WordsListFragment : BaseFragment<AppState>(), BackButtonListener {
+    @Inject
+    internal lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    override val model: WordsListViewModel by lazy {
+        ViewModelProvider(this, viewModelFactory).get(WordsListViewModel::class.java)
+    }
+
+    private val observer = Observer<AppState> { renderData(it)  }
 
     private var adapter: WordsListRVAdapter? = null
     private val onListItemClickListener: WordsListRVAdapter.OnListItemClickListener =
@@ -30,8 +41,8 @@ class WordsListFragment : BaseFragment<AppState>(), BackButtonListener {
         private const val BOTTOM_SHEET_FRAGMENT_DIALOG_TAG = "12345"
     }
 
-    override fun createPresenter(): FragmentPresenter<AppState, View> {
-        return App.instance.presenterHolder.getWordsListPresenter()
+    init {
+        App.instance.appComponent.inject(this)
     }
 
     override fun onCreateView(
@@ -43,28 +54,40 @@ class WordsListFragment : BaseFragment<AppState>(), BackButtonListener {
 
     override fun onViewCreated(view: android.view.View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        println("model: ${model.toString()} ")
+        model.subscribe().observe(viewLifecycleOwner, observer)
         search_fab.setOnClickListener {
             val searchDialogFragment = SearchDialogFragment.newInstance()
             searchDialogFragment.setOnSearchClickListener(object : SearchDialogFragment.OnSearchClickListener {
                 override fun onClick(searchWord: String) {
-                    fragmentPresenter.getData(searchWord, true)
+                    isNetworkAvailable = isOnline(activity!!.applicationContext)
+                    if (isNetworkAvailable) {
+                        model.getData(searchWord, isNetworkAvailable)
+                    } else {
+                        showNoInternetConnectionDialog()
+                    }
                 }
             })
             searchDialogFragment.show(childFragmentManager, BOTTOM_SHEET_FRAGMENT_DIALOG_TAG)
         }
     }
 
-    override fun renderData(appState: AppState) {
-        when (appState) {
+    override fun renderData(dataModel: AppState) {
+        when (dataModel) {
             is AppState.Success -> {
-                val dataModel = appState.data
-                if (dataModel == null || dataModel.isEmpty()) {
-                    showErrorScreen(getString(R.string.empty_server_response_on_success))
+                showViewWorking()
+                val dataModel = dataModel.data
+                if (dataModel.isNullOrEmpty()) {
+                    showAlertDialog(
+                        getString(R.string.dialog_tittle_sorry),
+                        getString(R.string.empty_server_response_on_success)
+                    )
                 } else {
                     showViewSuccess()
                     if (adapter == null) {
                         main_activity_recyclerview.layoutManager = LinearLayoutManager(context)
-                        main_activity_recyclerview.adapter = WordsListRVAdapter(onListItemClickListener, dataModel)
+                        main_activity_recyclerview.adapter =
+                            WordsListRVAdapter(onListItemClickListener, dataModel)
                     } else {
                         adapter!!.setData(dataModel)
                     }
@@ -73,52 +96,29 @@ class WordsListFragment : BaseFragment<AppState>(), BackButtonListener {
             }
             is AppState.Loading -> {
                 showViewLoading()
-                if (appState.progress != null) {
+                if (dataModel.progress != null) {
                     progress_bar_horizontal.visibility = android.view.View.VISIBLE
                     progress_bar_round.visibility = android.view.View.GONE
-                    progress_bar_horizontal.progress = appState.progress
+                    progress_bar_horizontal.progress = dataModel.progress
                 } else {
                     progress_bar_horizontal.visibility = android.view.View.GONE
                     progress_bar_round.visibility = android.view.View.VISIBLE
                 }
             }
             is AppState.Error -> {
-                showErrorScreen(appState.error.message)
+                showViewWorking()
+                showAlertDialog(getString(R.string.error_stub), dataModel.error.message)
             }
         }
     }
 
-    override fun onDestroy() {
-        // here will be logic, based on FragmentLifecycleCallbacks
-        if(activity?.isFinishing == true) App.instance.presenterHolder.clearWordsListPresenter()
-        super.onDestroy()
-    }
+            private fun showViewWorking() {
+                loading_frame_layout.visibility = android.view.View.GONE
+            }
 
-    private fun showErrorScreen(error: String?) {
-        showViewError()
-        error_textview.text = error ?: getString(R.string.undefined_error)
-        reload_button.setOnClickListener {
-            fragmentPresenter.getData("hi", true)
-        }
-    }
+            private fun showViewLoading() {
+                loading_frame_layout.visibility = android.view.View.VISIBLE
+            }
 
-    private fun showViewSuccess() {
-        success_linear_layout.visibility = android.view.View.VISIBLE
-        loading_frame_layout.visibility = android.view.View.GONE
-        error_linear_layout.visibility = android.view.View.GONE
-    }
-
-    private fun showViewLoading() {
-        success_linear_layout.visibility = android.view.View.GONE
-        loading_frame_layout.visibility = android.view.View.VISIBLE
-        error_linear_layout.visibility = android.view.View.GONE
-    }
-
-    private fun showViewError() {
-        success_linear_layout.visibility = android.view.View.GONE
-        loading_frame_layout.visibility = android.view.View.GONE
-        error_linear_layout.visibility = android.view.View.VISIBLE
-    }
-
-    override fun backPressed() = fragmentPresenter.backClick()
+            override fun backPressed(): Boolean = model.backPressed()
 }

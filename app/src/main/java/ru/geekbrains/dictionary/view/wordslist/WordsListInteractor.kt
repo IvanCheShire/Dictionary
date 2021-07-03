@@ -4,7 +4,7 @@ import io.reactivex.Observable
 import ru.geekbrains.dictionary.model.data.AppState
 import ru.geekbrains.dictionary.model.data.DataModel
 import ru.geekbrains.dictionary.model.repository.Repository
-import ru.geekbrains.dictionary.presenter.Interactor
+import ru.geekbrains.dictionary.viewmodel.Interactor
 
 class WordsListInteractor(
     private val remoteRepository: Repository<List<DataModel>>,
