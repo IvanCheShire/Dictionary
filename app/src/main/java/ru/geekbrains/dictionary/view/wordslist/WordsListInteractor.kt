@@ -1,6 +1,5 @@
 package ru.geekbrains.dictionary.view.wordslist
 
-import io.reactivex.Observable
 import ru.geekbrains.dictionary.model.data.AppState
 import ru.geekbrains.dictionary.model.data.DataModel
 import ru.geekbrains.dictionary.model.repository.Repository
@@ -11,11 +10,11 @@ class WordsListInteractor(
     private val localRepository: Repository<List<DataModel>>
 ) : Interactor<AppState> {
 
-    override fun getData(word: String, fromRemoteSource: Boolean): Observable<AppState> {
+    override suspend fun getData(word: String, fromRemoteSource: Boolean): AppState {
         return if (fromRemoteSource) {
-            remoteRepository.getData(word).map { AppState.Success(it) }
+            AppState.Success(remoteRepository.getData(word))
         } else {
-            localRepository.getData(word).map { AppState.Success(it) }
+            AppState.Success(localRepository.getData(word))
         }
     }
 }

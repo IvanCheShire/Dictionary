@@ -8,41 +8,32 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_words_list.*
+import org.koin.android.ext.android.getKoin
 import ru.geekbrains.dictionary.R
 import ru.geekbrains.dictionary.model.data.AppState
 import ru.geekbrains.dictionary.model.data.DataModel
 import ru.geekbrains.dictionary.utils.network.isOnline
-import ru.geekbrains.dictionary.view.App
 import ru.geekbrains.dictionary.view.BackButtonListener
 import ru.geekbrains.dictionary.view.base.BaseFragment
 import ru.geekbrains.dictionary.view.base.View
 import ru.geekbrains.dictionary.view.wordslist.adapter.WordsListRVAdapter
-import javax.inject.Inject
 
 class WordsListFragment : BaseFragment<AppState>(), BackButtonListener {
-    @Inject
-    internal lateinit var viewModelFactory: ViewModelProvider.Factory
 
     override val model: WordsListViewModel by lazy {
-        ViewModelProvider(this, viewModelFactory).get(WordsListViewModel::class.java)
+        ViewModelProvider(this, getKoin().get()).get(WordsListViewModel::class.java)
     }
 
     private val observer = Observer<AppState> { renderData(it)  }
-
     private var adapter: WordsListRVAdapter? = null
     private val onListItemClickListener: WordsListRVAdapter.OnListItemClickListener =
         object : WordsListRVAdapter.OnListItemClickListener {
             override fun onItemClick(data: DataModel) {
             }
         }
-
     companion object {
         fun newInstance() = WordsListFragment()
         private const val BOTTOM_SHEET_FRAGMENT_DIALOG_TAG = "12345"
-    }
-
-    init {
-        App.instance.appComponent.inject(this)
     }
 
     override fun onCreateView(
@@ -54,7 +45,7 @@ class WordsListFragment : BaseFragment<AppState>(), BackButtonListener {
 
     override fun onViewCreated(view: android.view.View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        println("model: ${model.toString()} ")
+        println("model: $model ")
         model.subscribe().observe(viewLifecycleOwner, observer)
         search_fab.setOnClickListener {
             val searchDialogFragment = SearchDialogFragment.newInstance()

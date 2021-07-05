@@ -6,28 +6,19 @@ import android.os.Bundle
 import ru.geekbrains.dictionary.R
 import ru.geekbrains.dictionary.model.data.AppState
 import ru.geekbrains.dictionary.presenter.MainActivityPresenter
-import ru.geekbrains.dictionary.view.App
+import org.koin.android.ext.android.getKoin
 import ru.geekbrains.dictionary.view.BackButtonListener
 import ru.terrakok.cicerone.NavigatorHolder
 import ru.terrakok.cicerone.android.support.SupportAppNavigator
 
-import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
-    @Inject
-    internal lateinit var viewModelFactory: ViewModelProvider.Factory
-    @Inject
-    lateinit var navigatorHolder: NavigatorHolder
-
-
+    val navigatorHolder: NavigatorHolder by lazy { getKoin().get<NavigatorHolder>() }
     val navigator = SupportAppNavigator(this, supportFragmentManager, R.id.container)
-    val model: MainActivityViewModel by lazy {
-        ViewModelProvider(this, viewModelFactory).get(MainActivityViewModel::class.java)
-    }
 
-    init {
-        App.instance.appComponent.inject(this)
+    val model: MainActivityViewModel by lazy {
+        ViewModelProvider(this, getKoin().get()).get(MainActivityViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
