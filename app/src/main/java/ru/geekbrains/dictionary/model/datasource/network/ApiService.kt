@@ -1,4 +1,4 @@
-package ru.geekbrains.dictionary.model.datasource
+package ru.geekbrains.dictionary.model.datasource.network
 
 import kotlinx.coroutines.Deferred
 import retrofit2.http.GET

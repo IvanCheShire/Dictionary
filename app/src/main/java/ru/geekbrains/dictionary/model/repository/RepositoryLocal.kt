@@ -1,8 +1,8 @@
-package ru.geekbrains.dictionary.model.datasource
+package ru.geekbrains.dictionary.model.repository
 
 import ru.geekbrains.dictionary.model.data.AppState
 
-interface DataSourceLocal<T> : DataSource<T> {
+interface RepositoryLocal<T> : Repository<T> {
 
     suspend fun saveToDB(appState: AppState)
 

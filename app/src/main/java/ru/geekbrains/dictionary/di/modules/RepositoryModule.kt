@@ -7,7 +7,7 @@ import ru.geekbrains.dictionary.di.NAME_REMOTE
 import ru.geekbrains.dictionary.model.data.DataModel
 import ru.geekbrains.dictionary.model.datasource.DataSource
 import ru.geekbrains.dictionary.model.datasource.RetrofitImpl
-import ru.geekbrains.dictionary.model.datasource.RoomDataBaseImpl
+import ru.geekbrains.dictionary.model.datasource.database.RoomDataBaseImpl
 import ru.geekbrains.dictionary.model.repository.Repository
 import ru.geekbrains.dictionary.model.repository.RepositoryImpl
 import javax.inject.Named

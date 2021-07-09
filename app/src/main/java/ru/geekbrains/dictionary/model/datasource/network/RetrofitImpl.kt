@@ -1,4 +1,4 @@
-package ru.geekbrains.dictionary.model.datasource
+package ru.geekbrains.dictionary.model.datasource.network
 
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.GsonBuilder
@@ -9,6 +9,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.geekbrains.dictionary.model.data.DataModel
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
+import ru.geekbrains.dictionary.model.datasource.DataSource
 
 class RetrofitImpl : DataSource<List<DataModel>> {
 
