@@ -1,7 +1,7 @@
 package ru.geekbrains.dictionary.presenter
 
-import ru.geekbrains.dictionary.model.data.AppState
-import ru.geekbrains.dictionary.model.data.DataModel
+import ru.geekbrains.model.data.AppState
+import ru.geekbrains.model.data.DataModel
 import ru.geekbrains.dictionary.view.base.View
 
 interface FragmentPresenter<T : AppState, V : View> {

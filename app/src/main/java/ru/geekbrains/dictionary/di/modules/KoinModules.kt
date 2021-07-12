@@ -5,14 +5,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
 import org.koin.dsl.module
 import ru.geekbrains.dictionary.di.ViewModelFactory
-import ru.geekbrains.dictionary.model.data.DataModel
+import ru.geekbrains.model.data.DataModel
 import ru.geekbrains.dictionary.model.datasource.RetrofitImpl
-import ru.geekbrains.dictionary.model.datasource.database.RoomDataBaseImpl
-import ru.geekbrains.dictionary.model.repository.Repository
-import ru.geekbrains.dictionary.model.repository.RepositoryImpl
+import ru.geekbrains.model.data.datasource.database.RoomDataBaseImpl
+import ru.geekbrains.repository.repository.Repository
+import ru.geekbrains.repository.repository.RepositoryImpl
 import ru.geekbrains.dictionary.view.main.MainActivityViewModel
-import ru.geekbrains.dictionary.view.wordslist.WordsListInteractor
-import ru.geekbrains.dictionary.view.wordslist.WordsListViewModel
+import ru.geekbrains.wordslistscreen.wordslist.WordsListInteractor
+import ru.geekbrains.wordslistscreen.wordslist.WordsListViewModel
 import ru.terrakok.cicerone.Cicerone
 import ru.terrakok.cicerone.NavigatorHolder
 import ru.terrakok.cicerone.Router
@@ -30,7 +30,7 @@ val viewModelModule = module {
         var map =
             mutableMapOf(
                 MainActivityViewModel::class.java to Provider<ViewModel>{MainActivityViewModel(get<Router>())},
-                WordsListViewModel::class.java to Provider<ViewModel>{WordsListViewModel(get<WordsListInteractor>(), get<Router>()) },
+                WordsListViewModel::class.java to Provider<ViewModel>{ WordsListViewModel(get<WordsListInteractor>(), get<Router>()) },
                 HistoryViewModel::class.java to Provider<ViewModel>{HistoryViewModel(get<HistoryInteractor>(), get<Router>()) })
         map
     }

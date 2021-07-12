@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import ru.geekbrains.dictionary.R
-import ru.geekbrains.dictionary.model.data.AppState
+import ru.geekbrains.model.data.AppState
 import ru.geekbrains.dictionary.presenter.MainActivityPresenter
 import org.koin.android.ext.android.getKoin
 import ru.geekbrains.dictionary.view.BackButtonListener
@@ -41,12 +41,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         supportFragmentManager.fragments.forEach {
-            if (it is BackButtonListener && it.backPressed()) {
+            if (it is ru.geekbrains.dictionary.core.BackButtonListener && it.backPressed()) {
                 return
             }
         }
-        model.backPressed()
-    }
 
 
 

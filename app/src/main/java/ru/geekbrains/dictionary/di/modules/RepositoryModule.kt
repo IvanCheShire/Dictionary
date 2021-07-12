@@ -4,12 +4,12 @@ import dagger.Module
 import dagger.Provides
 import ru.geekbrains.dictionary.di.NAME_LOCAL
 import ru.geekbrains.dictionary.di.NAME_REMOTE
-import ru.geekbrains.dictionary.model.data.DataModel
-import ru.geekbrains.dictionary.model.datasource.DataSource
+import ru.geekbrains.model.data.DataModel
+import ru.geekbrains.repository.datasourse.DataSource
 import ru.geekbrains.dictionary.model.datasource.RetrofitImpl
-import ru.geekbrains.dictionary.model.datasource.database.RoomDataBaseImpl
-import ru.geekbrains.dictionary.model.repository.Repository
-import ru.geekbrains.dictionary.model.repository.RepositoryImpl
+import ru.geekbrains.model.data.datasource.database.RoomDataBaseImpl
+import ru.geekbrains.repository.repository.Repository
+import ru.geekbrains.repository.repository.RepositoryImpl
 import javax.inject.Named
 import javax.inject.Singleton
 

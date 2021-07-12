@@ -4,9 +4,9 @@ import dagger.Module
 import dagger.Provides
 import ru.geekbrains.dictionary.di.NAME_LOCAL
 import ru.geekbrains.dictionary.di.NAME_REMOTE
-import ru.geekbrains.dictionary.model.data.DataModel
-import ru.geekbrains.dictionary.model.repository.Repository
-import ru.geekbrains.dictionary.view.wordslist.WordsListInteractor
+import ru.geekbrains.model.data.DataModel
+import ru.geekbrains.repository.repository.Repository
+import ru.geekbrains.wordslistscreen.wordslist.WordsListInteractor
 import javax.inject.Named
 
 @Module

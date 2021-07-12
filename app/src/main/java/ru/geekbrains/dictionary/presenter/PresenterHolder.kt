@@ -1,9 +1,9 @@
 package ru.geekbrains.dictionary.presenter
 
-import ru.geekbrains.dictionary.model.data.AppState
+import ru.geekbrains.model.data.AppState
 import ru.geekbrains.dictionary.view.base.View
 import ru.geekbrains.dictionary.view.main.MainPresenterImpl
-import ru.geekbrains.dictionary.view.wordslist.WordsListPresenterImpl
+import ru.geekbrains.wordslistscreen.wordslist.WordsListPresenterImpl
 import ru.terrakok.cicerone.Router
 
 class PresenterHolder {

@@ -5,7 +5,7 @@ import dagger.Component
 import ru.geekbrains.dictionary.di.modules.*
 import ru.geekbrains.dictionary.view.App
 import ru.geekbrains.dictionary.view.main.MainActivity
-import ru.geekbrains.dictionary.view.wordslist.WordsListFragment
+import ru.geekbrains.wordslistscreen.wordslist.WordsListFragment
 import javax.inject.Singleton
 
 @Singleton

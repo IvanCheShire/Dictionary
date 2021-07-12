@@ -8,7 +8,7 @@ import dagger.multibindings.IntoMap
 import ru.geekbrains.dictionary.di.ViewModelFactory
 import ru.geekbrains.dictionary.di.ViewModelKey
 import ru.geekbrains.dictionary.view.main.MainActivityViewModel
-import ru.geekbrains.dictionary.view.wordslist.WordsListViewModel
+import ru.geekbrains.wordslistscreen.wordslist.WordsListViewModel
 
 
 @Module(includes = [InteractorModule::class])
