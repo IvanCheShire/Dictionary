@@ -35,6 +35,8 @@ android {
     kapt {
         generateStubs = true
     }
+
+    dynamicFeatures = [Modules.historyscreen]
 }
 
 dependencies {
@@ -93,6 +95,9 @@ dependencies {
     implementation Room.runtime
     kapt Room.compiler
     implementation Room.room_ktx
+
+    //Google Play libraries
+    implementation GooglePlay.googlePlayCore
 
     //Test
     testImplementation TestImpl.junit

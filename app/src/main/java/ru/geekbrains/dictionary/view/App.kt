@@ -21,7 +21,6 @@ class App: Application() {
         instance = this
         startKoin {
             androidContext(applicationContext)
-            modules(listOf(application, viewModelModule, navigation, mainActivity, wordsListScreen, historyScreen))
         }
     }
 }

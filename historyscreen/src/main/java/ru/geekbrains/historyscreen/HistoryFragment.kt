@@ -5,12 +5,15 @@ import android.view.*
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import org.koin.android.ext.android.getKoin
 import ru.geekbrains.historyscreen.R
+import ru.geekbrains.historyscreen.di.injectDependencies
 import ru.geekbrains.dictionary.model.data.AppState
 import ru.geekbrains.dictionary.model.data.DataModel
 import ru.geekbrains.core.BackButtonListener
 import ru.geekbrains.core.base.BaseFragment
 import ru.geekbrains.dictionary.view.wordslist.SearchDialogFragment
+import org.koin.core.qualifier.named
 
 class HistoryFragment : BaseFragment<AppState>(), BackButtonListener {
 
@@ -20,7 +23,8 @@ class HistoryFragment : BaseFragment<AppState>(), BackButtonListener {
     }
 
     override val model: HistoryViewModel by lazy {
-        ViewModelProvider(this, getKoin().get()).get(HistoryViewModel::class.java)
+        injectDependencies()
+        ViewModelProvider(this, getKoin().get<ViewModelProvider.Factory>(qualifier = named("historyViewModelProvider"))).get(HistoryViewModel::class.java)
     }
 
     private val observer = Observer<AppState> { renderData(it)  }

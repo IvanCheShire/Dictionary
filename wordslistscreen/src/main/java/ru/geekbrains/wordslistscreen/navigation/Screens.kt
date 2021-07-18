@@ -1,6 +1,6 @@
 package ru.geekbrains.wordslistscreen.navigation
 
-import ru.geekbrains.historyscreen.HistoryFragment
+import androidx.fragment.app.Fragment
 import ru.terrakok.cicerone.android.support.SupportAppScreen
 
 class Screens {
@@ -10,8 +10,8 @@ class Screens {
         override fun getFragment() = ru.geekbrains.descriptionscreen.DescriptionFragment.newInstance(word, description, pictureUrl)
     }
 
-    class HistoryScreen() : SupportAppScreen() {
-        override fun getFragment() = HistoryFragment.newInstance()
+    class NewModuleHistoryScreen(val historyFragment: Any) : SupportAppScreen(){
+        override fun getFragment() = historyFragment as? Fragment
     }
 
 

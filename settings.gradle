@@ -1,9 +1,9 @@
-include ':wordslistscreen'
-include ':descriptionscreen'
-include ':model'
-include ':repository'
-include ':historyscreen'
-include ':utils'
-include ':core'
-include ':app'
+include ":descriptionscreen"
+include ":wordslistscreen"
+include ":historyscreen"
+include ":repository"
+include ":model"
+include ":core"
+include ":utils"
+include ":app"
 rootProject.name = "Dictionary"
